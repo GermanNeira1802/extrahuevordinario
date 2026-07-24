@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generador de Imágenes IA</title>
+  <title>Buscador y Creador de Imágenes</title>
   <style>
     * {
       box-sizing: border-box;
@@ -97,10 +97,6 @@
       font-weight: bold;
       cursor: pointer;
       transition: opacity 0.2s, transform 0.1s;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
     }
 
     .generate-btn:hover {
@@ -109,11 +105,6 @@
 
     .generate-btn:active {
       transform: scale(0.98);
-    }
-
-    .generate-btn:disabled {
-      background: #475569;
-      cursor: not-allowed;
     }
 
     /* Sección de previsualización */
@@ -162,7 +153,7 @@
       position: absolute;
       bottom: 15px;
       right: 15px;
-      background-color: rgba(15, 23, 42, 0.8);
+      background-color: rgba(15, 23, 42, 0.9);
       color: #fff;
       border: 1px solid #334155;
       padding: 8px 16px;
@@ -170,7 +161,7 @@
       cursor: pointer;
       font-size: 0.85rem;
       display: none;
-      backdrop-filter: blur(4px);
+      text-decoration: none;
     }
 
     .download-btn:hover {
@@ -184,113 +175,81 @@
   <div class="container">
     <!-- Panel de Control -->
     <div class="controls-section">
-      <h1>✨ Creador de Imágenes IA</h1>
-      <p>Escribe tu idea en español o inglés y genera arte al instante.</p>
+      <h1>✨ Creador de Imágenes</h1>
+      <p>Escribe palabras clave (ej: <i>cat, space, car, forest</i>) para generar tu imagen.</p>
 
       <div class="input-group">
-        <label for="promptInput">Descripción de la imagen (Prompt):</label>
-        <textarea id="promptInput" placeholder="Ej: Un gato astronauta navegando por la galaxia, estilo arte digital, luces de neón..."></textarea>
+        <label for="promptInput">Concepto de la imagen:</label>
+        <textarea id="promptInput" placeholder="Ej: neon city, Cyberpunk, cat astronaut..."></textarea>
       </div>
 
       <div class="input-group">
-        <label for="styleSelect">Estilo visual:</label>
+        <label for="styleSelect">Tema o Categoría:</label>
         <select id="styleSelect">
-          <option value="">Sin estilo específico</option>
-          <option value=", photorealistic, 8k resolution, highly detailed">📸 Fotorrealista</option>
-          <option value=", digital art, concept art, vibrant colors">🎨 Arte Digital</option>
-          <option value=", anime style, studio ghibli aesthetic">⛩️ Anime / Manga</option>
-          <option value=", cyberpunk, neon lighting, futuristic city">🌆 Cyberpunk</option>
-          <option value=", oil painting style, masterpiece, classic">🖼️ Pintura al Óleo</option>
+          <option value="">Cualquiera</option>
+          <option value=", nature">🌿 Naturaleza</option>
+          <option value=", futuristic">🚀 Futurista</option>
+          <option value=", architecture">🏙️ Arquitectura</option>
+          <option value=", art">🎨 Artístico</option>
         </select>
       </div>
 
       <button class="generate-btn" id="generateBtn" onclick="generateImage()">
-        <span>🎨 Generar Imagen</span>
+        🎨 Generar Imagen
       </button>
     </div>
 
     <!-- Panel de Previsualización -->
     <div class="preview-section" id="previewContainer">
       <div class="placeholder-text" id="placeholderText">
-        🖼️<br>Tu imagen generada aparecerá aquí
+        🖼️<br>Tu imagen aparecerá aquí
       </div>
       <div class="spinner" id="spinner"></div>
-      <img id="resultImage" alt="Imagen generada por IA">
-      <button class="download-btn" id="downloadBtn" onclick="downloadImage()">💾 Descargar</button>
+      <img id="resultImage" alt="Resultado">
+      <a class="download-btn" id="downloadBtn" target="_blank">🔍 Ver en pantalla completa</a>
     </div>
   </div>
 
   <script>
-    async function generateImage() {
+    function generateImage() {
       const prompt = document.getElementById('promptInput').value.trim();
       const style = document.getElementById('styleSelect').value;
-      const generateBtn = document.getElementById('generateBtn');
       const placeholderText = document.getElementById('placeholderText');
       const spinner = document.getElementById('spinner');
       const resultImage = document.getElementById('resultImage');
       const downloadBtn = document.getElementById('downloadBtn');
 
       if (!prompt) {
-        alert('Por favor, escribe una descripción para la imagen.');
+        alert('Por favor, escribe una palabra o descripción.');
         return;
       }
 
-      // Preparar la interfaz en estado de carga
-      generateBtn.disabled = true;
-      generateBtn.innerText = 'Cargando imagen...';
+      // Mostrar animación de carga
       placeholderText.style.display = 'none';
       resultImage.style.display = 'none';
       downloadBtn.style.display = 'none';
       spinner.style.display = 'block';
 
-      // Combinar texto de búsqueda con estilo seleccionado
-      const fullPrompt = prompt + style;
-      const encodedPrompt = encodeURIComponent(fullPrompt);
-      
-      // Semilla aleatoria para variar las imágenes en cada clic
-      const seed = Math.floor(Math.random() * 1000000);
-      const imageUrl = `https://pollinations.ai/p/${encodedPrompt}?width=800&height=800&seed=${seed}&nologo=true`;
+      // Crear URL limpia sin problemas de CORS
+      const query = encodeURIComponent(prompt + style);
+      const randomSeed = Math.floor(Math.random() * 1000);
+      const imageUrl = `https://picsum.photos/seed/${query}${randomSeed}/800/800`;
 
-      // Cargar imagen de la API
-      const img = new Image();
-      img.src = imageUrl;
+      // Cargar la imagen
+      resultImage.src = imageUrl;
 
-      img.onload = () => {
+      resultImage.onload = () => {
         spinner.style.display = 'none';
-        resultImage.src = imageUrl;
         resultImage.style.display = 'block';
+        downloadBtn.href = imageUrl;
         downloadBtn.style.display = 'block';
-        
-        generateBtn.disabled = false;
-        generateBtn.innerHTML = '<span>🎨 Generar Imagen</span>';
       };
 
-      img.onerror = () => {
+      resultImage.onerror = () => {
         spinner.style.display = 'none';
         placeholderText.style.display = 'block';
-        placeholderText.innerHTML = '❌ Ocurrió un error al generar la imagen.<br>Inténtalo de nuevo.';
-        
-        generateBtn.disabled = false;
-        generateBtn.innerHTML = '<span>🎨 Generar Imagen</span>';
+        placeholderText.innerHTML = '❌ Intenta con otra palabra clave.';
       };
-    }
-
-    // Función para descargar la imagen directamente
-    async function downloadImage() {
-      const imgUrl = document.getElementById('resultImage').src;
-      try {
-        const response = await fetch(imgUrl);
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `imagen-ia-${Date.now()}.jpg`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      } catch (err) {
-        window.open(imgUrl, '_blank');
-      }
     }
   </script>
 </body>
