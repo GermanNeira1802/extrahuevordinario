@@ -3,294 +3,295 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video Creator Studio</title>
+  <title>Generador de Imágenes IA</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
-      background-color: #0f111a;
-      color: #ffffff;
+      background-color: #0f172a;
+      color: #f8fafc;
       display: flex;
       justify-content: center;
+      align-items: center;
       min-height: 100vh;
-      padding: 30px 20px;
+      padding: 20px;
     }
 
-    .app-container {
+    .container {
       width: 100%;
-      max-width: 600px;
-      background-color: #1a1d2d;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-      border: 1px solid #2a2e45;
-      height: fit-content;
+      max-width: 900px;
+      background-color: #1e293b;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      border: 1px solid #334155;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
     }
 
-    h1 {
-      font-size: 1.5rem;
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .controls-section h1 {
+      font-size: 1.8rem;
       margin-bottom: 8px;
-      text-align: center;
-      color: #a855f7; /* Tono creativo/video */
-    }
-
-    .subtitle {
-      text-align: center;
-      font-size: 0.85rem;
-      color: #94a3b8;
-      margin-bottom: 24px;
-    }
-
-    .stats-card {
-      display: flex;
-      justify-content: space-around;
-      background-color: #11131d;
-      padding: 14px;
-      border-radius: 12px;
-      margin-bottom: 24px;
-      border: 1px solid #2a2e45;
-    }
-
-    .stat-item {
-      text-align: center;
-    }
-
-    .stat-item span {
-      display: block;
-      font-size: 1.2rem;
-      font-weight: bold;
       color: #38bdf8;
     }
 
-    .stat-item label {
-      font-size: 0.75rem;
+    .controls-section p {
       color: #94a3b8;
-    }
-
-    .scene-form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 24px;
-      background-color: #11131d;
-      padding: 16px;
-      border-radius: 12px;
-      border: 1px solid #2a2e45;
-    }
-
-    .scene-form input, .scene-form textarea {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid #2a2e45;
-      border-radius: 8px;
-      background-color: #1a1d2d;
-      color: #fff;
       font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #cbd5e1;
+    }
+
+    textarea, select {
+      width: 100%;
+      padding: 12px 16px;
+      background-color: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 0.95rem;
       outline: none;
+      transition: border-color 0.2s;
     }
 
-    .scene-form input:focus, .scene-form textarea:focus {
-      border-color: #a855f7;
+    textarea:focus, select:focus {
+      border-color: #38bdf8;
     }
 
-    .scene-form textarea {
-      resize: vertical;
-      height: 70px;
+    textarea {
+      resize: none;
+      height: 100px;
     }
 
-    .row {
+    .generate-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
       display: flex;
+      justify-content: center;
+      align-items: center;
       gap: 10px;
     }
 
-    .scene-form button {
-      background-color: #a855f7;
-      color: #fff;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.2s;
+    .generate-btn:hover {
+      opacity: 0.9;
     }
 
-    .scene-form button:hover {
-      background-color: #9333ea;
+    .generate-btn:active {
+      transform: scale(0.98);
     }
 
-    .scenes-list {
+    .generate-btn:disabled {
+      background: #475569;
+      cursor: not-allowed;
+    }
+
+    /* Sección de previsualización */
+    .preview-section {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      max-height: 350px;
-      overflow-y: auto;
+      align-items: center;
+      justify-content: center;
+      background-color: #0f172a;
+      border-radius: 16px;
+      border: 2px dashed #334155;
+      position: relative;
+      min-height: 320px;
+      overflow: hidden;
     }
 
-    .scene-card {
-      background-color: #11131d;
-      border-radius: 10px;
-      padding: 14px;
-      border: 1px solid #2a2e45;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
+    .preview-section img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
     }
 
-    .scene-info h3 {
-      font-size: 0.95rem;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-
-    .scene-info p {
-      font-size: 0.85rem;
-      color: #94a3b8;
-      white-space: pre-line;
-    }
-
-    .scene-meta {
-      display: inline-block;
-      font-size: 0.75rem;
-      background-color: #2a2e45;
-      color: #38bdf8;
-      padding: 2px 8px;
-      border-radius: 4px;
-      margin-top: 6px;
-    }
-
-    .delete-btn {
-      background: none;
-      border: none;
-      color: #f87171;
-      cursor: pointer;
-      font-size: 1rem;
-      padding: 4px;
-    }
-
-    .delete-btn:hover {
-      color: #ef4444;
-    }
-
-    .empty-state {
-      text-align: center;
+    .placeholder-text {
       color: #64748b;
+      text-align: center;
       padding: 20px;
       font-size: 0.9rem;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-left-color: #38bdf8;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .download-btn {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      background-color: rgba(15, 23, 42, 0.8);
+      color: #fff;
+      border: 1px solid #334155;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: none;
+      backdrop-filter: blur(4px);
+    }
+
+    .download-btn:hover {
+      background-color: #38bdf8;
+      color: #0f172a;
     }
   </style>
 </head>
 <body>
 
-  <div class="app-container">
-    <h1>🎬 Video Creator Studio</h1>
-    <p class="subtitle">Planificador de guiones y storyboard para tus videos</p>
+  <div class="container">
+    <!-- Panel de Control -->
+    <div class="controls-section">
+      <h1>✨ Creador de Imágenes IA</h1>
+      <p>Escribe tu idea en español o inglés y genera arte al instante.</p>
 
-    <div class="stats-card">
-      <div class="stat-item">
-        <span id="totalScenes">0</span>
-        <label>Escenas</label>
+      <div class="input-group">
+        <label for="promptInput">Descripción de la imagen (Prompt):</label>
+        <textarea id="promptInput" placeholder="Ej: Un gato astronauta navegando por la galaxia, estilo arte digital, luces de neón..."></textarea>
       </div>
-      <div class="stat-item">
-        <span id="totalDuration">0s</span>
-        <label>Duración Est.</label>
+
+      <div class="input-group">
+        <label for="styleSelect">Estilo visual:</label>
+        <select id="styleSelect">
+          <option value="">Sin estilo específico</option>
+          <option value=", photorealistic, 8k resolution, highly detailed">📸 Fotorrealista</option>
+          <option value=", digital art, concept art, vibrant colors">🎨 Arte Digital</option>
+          <option value=", anime style, studio ghibli aesthetic">⛩️ Anime / Manga</option>
+          <option value=", cyberpunk, neon lighting, futuristic city">🌆 Cyberpunk</option>
+          <option value=", oil painting style, masterpiece, classic">🖼️ Pintura al Óleo</option>
+        </select>
       </div>
+
+      <button class="generate-btn" id="generateBtn" onclick="generateImage()">
+        <span>🎨 Generar Imagen</span>
+      </button>
     </div>
 
-    <form class="scene-form" id="sceneForm">
-      <input type="text" id="sceneTitle" placeholder="Título de la escena (ej. Introducción)" required>
-      <textarea id="sceneScript" placeholder="¿Qué se va a decir o mostrar en esta escena?" required></textarea>
-      <div class="row">
-        <input type="number" id="sceneTime" placeholder="Duración (segundos)" min="1" value="10" required>
-        <button type="submit">➕ Añadir Escena</button>
+    <!-- Panel de Previsualización -->
+    <div class="preview-section" id="previewContainer">
+      <div class="placeholder-text" id="placeholderText">
+        🖼️<br>Tu imagen generada aparecerá aquí
       </div>
-    </form>
-
-    <div class="scenes-list" id="scenesList">
-      <!-- Las escenas se cargan aquí -->
+      <div class="spinner" id="spinner"></div>
+      <img id="resultImage" alt="Imagen generada por IA">
+      <button class="download-btn" id="downloadBtn" onclick="downloadImage()">💾 Descargar</button>
     </div>
   </div>
 
   <script>
-    let scenes = [];
+    async function generateImage() {
+      const prompt = document.getElementById('promptInput').value.trim();
+      const style = document.getElementById('styleSelect').value;
+      const generateBtn = document.getElementById('generateBtn');
+      const placeholderText = document.getElementById('placeholderText');
+      const spinner = document.getElementById('spinner');
+      const resultImage = document.getElementById('resultImage');
+      const downloadBtn = document.getElementById('downloadBtn');
 
-    const sceneForm = document.getElementById('sceneForm');
-    const sceneTitle = document.getElementById('sceneTitle');
-    const sceneScript = document.getElementById('sceneScript');
-    const sceneTime = document.getElementById('sceneTime');
-    const scenesList = document.getElementById('scenesList');
-    const totalScenesEl = document.getElementById('totalScenes');
-    const totalDurationEl = document.getElementById('totalDuration');
-
-    sceneForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const newScene = {
-        id: Date.now(),
-        title: sceneTitle.value.trim(),
-        script: sceneScript.value.trim(),
-        duration: parseInt(sceneTime.value) || 5
-      };
-
-      scenes.push(newScene);
-      renderScenes();
-      sceneForm.reset();
-      sceneTime.value = "10";
-    });
-
-    function deleteScene(id) {
-      scenes = scenes.filter(scene => scene.id !== id);
-      renderScenes();
-    }
-
-    function renderScenes() {
-      scenesList.innerHTML = '';
-      
-      if (scenes.length === 0) {
-        scenesList.innerHTML = '<div class="empty-state">No hay escenas creadas. ¡Empieza añadiendo la primera!</div>';
-        totalScenesEl.textContent = '0';
-        totalDurationEl.textContent = '0s';
+      if (!prompt) {
+        alert('Por favor, escribe una descripción para la imagen.');
         return;
       }
 
-      let totalSeconds = 0;
+      // Preparar la interfaz en estado de carga
+      generateBtn.disabled = true;
+      generateBtn.innerText = 'Cargando imagen...';
+      placeholderText.style.display = 'none';
+      resultImage.style.display = 'none';
+      downloadBtn.style.display = 'none';
+      spinner.style.display = 'block';
 
-      scenes.forEach((scene, index) => {
-        totalSeconds += scene.duration;
-
-        const card = document.createElement('div');
-        card.className = 'scene-card';
-        card.innerHTML = `
-          <div class="scene-info">
-            <h3>#${index + 1} - ${scene.title}</h3>
-            <p>${scene.script}</p>
-            <span class="scene-meta">⏱️ ${scene.duration} segundos</span>
-          </div>
-          <button class="delete-btn" onclick="deleteScene(${scene.id})" title="Eliminar escena">🗑️</button>
-        `;
-        scenesList.appendChild(card);
-      });
-
-      totalScenesEl.textContent = scenes.length;
+      // Combinar texto de búsqueda con estilo seleccionado
+      const fullPrompt = prompt + style;
+      const encodedPrompt = encodeURIComponent(fullPrompt);
       
-      // Formatear duración en minutos si pasa de 60s
-      if (totalSeconds >= 60) {
-        const mins = Math.floor(totalSeconds / 60);
-        const secs = totalSeconds % 60;
-        totalDurationEl.textContent = `${mins}m ${secs}s`;
-      } else {
-        totalDurationEl.textContent = `${totalSeconds}s`;
-      }
+      // Semilla aleatoria para variar las imágenes en cada clic
+      const seed = Math.floor(Math.random() * 1000000);
+      const imageUrl = `https://pollinations.ai/p/${encodedPrompt}?width=800&height=800&seed=${seed}&nologo=true`;
+
+      // Cargar imagen de la API
+      const img = new Image();
+      img.src = imageUrl;
+
+      img.onload = () => {
+        spinner.style.display = 'none';
+        resultImage.src = imageUrl;
+        resultImage.style.display = 'block';
+        downloadBtn.style.display = 'block';
+        
+        generateBtn.disabled = false;
+        generateBtn.innerHTML = '<span>🎨 Generar Imagen</span>';
+      };
+
+      img.onerror = () => {
+        spinner.style.display = 'none';
+        placeholderText.style.display = 'block';
+        placeholderText.innerHTML = '❌ Ocurrió un error al generar la imagen.<br>Inténtalo de nuevo.';
+        
+        generateBtn.disabled = false;
+        generateBtn.innerHTML = '<span>🎨 Generar Imagen</span>';
+      };
     }
 
-    // Inicializar estado vacío
-    renderScenes();
+    // Función para descargar la imagen directamente
+    async function downloadImage() {
+      const imgUrl = document.getElementById('resultImage').src;
+      try {
+        const response = await fetch(imgUrl);
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `imagen-ia-${Date.now()}.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch (err) {
+        window.open(imgUrl, '_blank');
+      }
+    }
   </script>
-
 </body>
 </html>
