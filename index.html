@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cinema Music App</title>
+  <title>Video Creator Studio</title>
   <style>
     * {
       box-sizing: border-box;
@@ -13,215 +13,284 @@
     }
 
     body {
-      background-color: #0b0d12;
+      background-color: #0f111a;
       color: #ffffff;
       display: flex;
       justify-content: center;
-      align-items: center;
       min-height: 100vh;
-      padding: 20px;
+      padding: 30px 20px;
     }
 
     .app-container {
       width: 100%;
-      max-width: 420px;
-      background-color: #161a23;
+      max-width: 600px;
+      background-color: #1a1d2d;
       border-radius: 16px;
       padding: 24px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-      border: 1px solid #2a3142;
+      border: 1px solid #2a2e45;
+      height: fit-content;
     }
 
     h1 {
-      font-size: 1.4rem;
-      margin-bottom: 20px;
+      font-size: 1.5rem;
+      margin-bottom: 8px;
       text-align: center;
-      color: #e5a00d; /* Dorado cine */
+      color: #a855f7; /* Tono creativo/video */
     }
 
-    .search-box {
-      margin-bottom: 20px;
+    .subtitle {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 24px;
     }
 
-    .search-box input {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1px solid #2a3142;
-      border-radius: 20px;
-      background-color: #0b0d12;
-      color: #fff;
-      font-size: 0.95rem;
-      outline: none;
+    .stats-card {
+      display: flex;
+      justify-content: space-around;
+      background-color: #11131d;
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      border: 1px solid #2a2e45;
     }
 
-    .search-box input:focus {
-      border-color: #e5a00d;
+    .stat-item {
+      text-align: center;
     }
 
-    .song-list {
-      list-style: none;
-      max-height: 240px;
-      overflow-y: auto;
-      margin-bottom: 20px;
+    .stat-item span {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #38bdf8;
+    }
+
+    .stat-item label {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+
+    .scene-form {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
+      margin-bottom: 24px;
+      background-color: #11131d;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid #2a2e45;
     }
 
-    .song-item {
+    .scene-form input, .scene-form textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #2a2e45;
+      border-radius: 8px;
+      background-color: #1a1d2d;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .scene-form input:focus, .scene-form textarea:focus {
+      border-color: #a855f7;
+    }
+
+    .scene-form textarea {
+      resize: vertical;
+      height: 70px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .scene-form button {
+      background-color: #a855f7;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+
+    .scene-form button:hover {
+      background-color: #9333ea;
+    }
+
+    .scenes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 350px;
+      overflow-y: auto;
+    }
+
+    .scene-card {
+      background-color: #11131d;
+      border-radius: 10px;
+      padding: 14px;
+      border: 1px solid #2a2e45;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 12px;
-      background-color: #0b0d12;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: 1px solid transparent;
+      align-items: flex-start;
+      gap: 12px;
     }
 
-    .song-item:hover {
-      background-color: #1f2533;
-      border-color: #e5a00d;
-    }
-
-    .song-info h3 {
+    .scene-info h3 {
       font-size: 0.95rem;
-      font-weight: 600;
       color: #fff;
+      margin-bottom: 4px;
     }
 
-    .song-info p {
-      font-size: 0.8rem;
-      color: #8a94a6;
-    }
-
-    .player {
-      background-color: #0b0d12;
-      border-radius: 12px;
-      padding: 16px;
-      text-align: center;
-      border: 1px solid #2a3142;
-    }
-
-    .now-playing {
-      margin-bottom: 12px;
-    }
-
-    .now-playing h4 {
-      font-size: 1rem;
-      color: #fff;
-    }
-
-    .now-playing p {
+    .scene-info p {
       font-size: 0.85rem;
-      color: #e5a00d;
+      color: #94a3b8;
+      white-space: pre-line;
     }
 
-    audio {
-      width: 100%;
-      height: 40px;
-      outline: none;
+    .scene-meta {
+      display: inline-block;
+      font-size: 0.75rem;
+      background-color: #2a2e45;
+      color: #38bdf8;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: 6px;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: #f87171;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 4px;
+    }
+
+    .delete-btn:hover {
+      color: #ef4444;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #64748b;
+      padding: 20px;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
 
   <div class="app-container">
-    <h1>🎬 Cinema Soundtracks</h1>
+    <h1>🎬 Video Creator Studio</h1>
+    <p class="subtitle">Planificador de guiones y storyboard para tus videos</p>
 
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Buscar película o tema..." onkeyup="filterSongs()">
+    <div class="stats-card">
+      <div class="stat-item">
+        <span id="totalScenes">0</span>
+        <label>Escenas</label>
+      </div>
+      <div class="stat-item">
+        <span id="totalDuration">0s</span>
+        <label>Duración Est.</label>
+      </div>
     </div>
 
-    <ul class="song-list" id="songList">
-      <!-- Las canciones de películas se cargan dinámicamente -->
-    </ul>
-
-    <div class="player">
-      <div class="now-playing">
-        <h4 id="currentTitle">Selecciona una banda sonora</h4>
-        <p id="currentArtist">--</p>
+    <form class="scene-form" id="sceneForm">
+      <input type="text" id="sceneTitle" placeholder="Título de la escena (ej. Introducción)" required>
+      <textarea id="sceneScript" placeholder="¿Qué se va a decir o mostrar en esta escena?" required></textarea>
+      <div class="row">
+        <input type="number" id="sceneTime" placeholder="Duración (segundos)" min="1" value="10" required>
+        <button type="submit">➕ Añadir Escena</button>
       </div>
-      <audio id="audioPlayer" controls></audio>
+    </form>
+
+    <div class="scenes-list" id="scenesList">
+      <!-- Las escenas se cargan aquí -->
     </div>
   </div>
 
   <script>
-    // Lista de música temática de películas con audio mp3 real directo
-    const playlist = [
-      {
-        title: "Star Wars Main Theme",
-        movie: "Star Wars",
-        url: "https://ia800703.us.archive.org/33/items/StarWarsMainTheme/Star%20Wars%20Main%20Theme.mp3"
-      },
-      {
-        title: "He's a Pirate",
-        movie: "Piratas del Caribe",
-        url: "https://ia800903.us.archive.org/27/items/HesAPirate/HesAPirate.mp3"
-      },
-      {
-        title: "The Imperial March",
-        movie: "Star Wars",
-        url: "https://ia800703.us.archive.org/33/items/StarWarsMainTheme/The%20Imperial%20March.mp3"
-      },
-      {
-        title: "Hedwig's Theme",
-        movie: "Harry Potter",
-        url: "https://ia800301.us.archive.org/26/items/HarryPotterThemeSong/Harry%20Potter%20Theme%20Song.mp3"
-      },
-      {
-        title: "Time",
-        movie: "Inception (El Origen)",
-        url: "https://ia800201.us.archive.org/12/items/InceptionTime/Hans%20Zimmer%20-%20Time.mp3"
-      }
-    ];
+    let scenes = [];
 
-    const songListEl = document.getElementById('songList');
-    const audioPlayer = document.getElementById('audioPlayer');
-    const currentTitle = document.getElementById('currentTitle');
-    const currentArtist = document.getElementById('currentArtist');
+    const sceneForm = document.getElementById('sceneForm');
+    const sceneTitle = document.getElementById('sceneTitle');
+    const sceneScript = document.getElementById('sceneScript');
+    const sceneTime = document.getElementById('sceneTime');
+    const scenesList = document.getElementById('scenesList');
+    const totalScenesEl = document.getElementById('totalScenes');
+    const totalDurationEl = document.getElementById('totalDuration');
 
-    function renderSongs(songs) {
-      songListEl.innerHTML = '';
-      if (songs.length === 0) {
-        songListEl.innerHTML = '<li style="color: #8a94a6; text-align: center; padding: 10px;">No se encontraron bandas sonoras</li>';
+    sceneForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const newScene = {
+        id: Date.now(),
+        title: sceneTitle.value.trim(),
+        script: sceneScript.value.trim(),
+        duration: parseInt(sceneTime.value) || 5
+      };
+
+      scenes.push(newScene);
+      renderScenes();
+      sceneForm.reset();
+      sceneTime.value = "10";
+    });
+
+    function deleteScene(id) {
+      scenes = scenes.filter(scene => scene.id !== id);
+      renderScenes();
+    }
+
+    function renderScenes() {
+      scenesList.innerHTML = '';
+      
+      if (scenes.length === 0) {
+        scenesList.innerHTML = '<div class="empty-state">No hay escenas creadas. ¡Empieza añadiendo la primera!</div>';
+        totalScenesEl.textContent = '0';
+        totalDurationEl.textContent = '0s';
         return;
       }
 
-      songs.forEach(song => {
-        const li = document.createElement('li');
-        li.className = 'song-item';
-        li.innerHTML = `
-          <div class="song-info">
-            <h3>${song.title}</h3>
-            <p>🎬 ${song.movie}</p>
+      let totalSeconds = 0;
+
+      scenes.forEach((scene, index) => {
+        totalSeconds += scene.duration;
+
+        const card = document.createElement('div');
+        card.className = 'scene-card';
+        card.innerHTML = `
+          <div class="scene-info">
+            <h3>#${index + 1} - ${scene.title}</h3>
+            <p>${scene.script}</p>
+            <span class="scene-meta">⏱️ ${scene.duration} segundos</span>
           </div>
-          <span>▶️</span>
+          <button class="delete-btn" onclick="deleteScene(${scene.id})" title="Eliminar escena">🗑️</button>
         `;
-        li.onclick = () => playSong(song);
-        songListEl.appendChild(li);
+        scenesList.appendChild(card);
       });
+
+      totalScenesEl.textContent = scenes.length;
+      
+      // Formatear duración en minutos si pasa de 60s
+      if (totalSeconds >= 60) {
+        const mins = Math.floor(totalSeconds / 60);
+        const secs = totalSeconds % 60;
+        totalDurationEl.textContent = `${mins}m ${secs}s`;
+      } else {
+        totalDurationEl.textContent = `${totalSeconds}s`;
+      }
     }
 
-    function playSong(song) {
-      currentTitle.textContent = song.title;
-      currentArtist.textContent = song.movie;
-      audioPlayer.src = song.url;
-      audioPlayer.play();
-    }
-
-    function filterSongs() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = playlist.filter(song => 
-        song.title.toLowerCase().includes(query) || 
-        song.movie.toLowerCase().includes(query)
-      );
-      renderSongs(filtered);
-    }
-
-    // Cargar la lista inicial
-    renderSongs(playlist);
+    // Inicializar estado vacío
+    renderScenes();
   </script>
+
 </body>
 </html>
