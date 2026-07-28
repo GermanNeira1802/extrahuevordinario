@@ -1,256 +1,131 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Buscador y Creador de Imágenes</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    body {
-      background-color: #0f172a;
-      color: #f8fafc;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 900px;
-      background-color: #1e293b;
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-      border: 1px solid #334155;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .controls-section h1 {
-      font-size: 1.8rem;
-      margin-bottom: 8px;
-      color: #38bdf8;
-    }
-
-    .controls-section p {
-      color: #94a3b8;
-      font-size: 0.9rem;
-      margin-bottom: 24px;
-    }
-
-    .input-group {
-      margin-bottom: 20px;
-    }
-
-    .input-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #cbd5e1;
-    }
-
-    textarea, select {
-      width: 100%;
-      padding: 12px 16px;
-      background-color: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      color: #fff;
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    textarea:focus, select:focus {
-      border-color: #38bdf8;
-    }
-
-    textarea {
-      resize: none;
-      height: 100px;
-    }
-
-    .generate-btn {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, #0284c7, #2563eb);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.1s;
-    }
-
-    .generate-btn:hover {
-      opacity: 0.9;
-    }
-
-    .generate-btn:active {
-      transform: scale(0.98);
-    }
-
-    /* Sección de previsualización */
-    .preview-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background-color: #0f172a;
-      border-radius: 16px;
-      border: 2px dashed #334155;
-      position: relative;
-      min-height: 320px;
-      overflow: hidden;
-    }
-
-    .preview-section img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
-    }
-
-    .placeholder-text {
-      color: #64748b;
-      text-align: center;
-      padding: 20px;
-      font-size: 0.9rem;
-    }
-
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid rgba(255, 255, 255, 0.1);
-      border-left-color: #38bdf8;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      display: none;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .download-btn {
-      position: absolute;
-      bottom: 15px;
-      right: 15px;
-      background-color: rgba(15, 23, 42, 0.9);
-      color: #fff;
-      border: 1px solid #334155;
-      padding: 8px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      display: none;
-      text-decoration: none;
-    }
-
-    .download-btn:hover {
-      background-color: #38bdf8;
-      color: #0f172a;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivina el Número Secreto</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74b9ff, #a29bfe);
+            color: #2d3436;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            color: #0984e3;
+            margin-bottom: 10px;
+        }
+        input {
+            padding: 10px;
+            font-size: 18px;
+            width: 60%;
+            border: 2px solid #dfe6e9;
+            border-radius: 8px;
+            margin-right: 10px;
+            outline: none;
+        }
+        input:focus {
+            border-color: #0984e3;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #0984e3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #74b9ff;
+        }
+        #mensaje {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="container">
-    <!-- Panel de Control -->
-    <div class="controls-section">
-      <h1>✨ Creador de Imágenes</h1>
-      <p>Escribe palabras clave (ej: <i>cat, space, car, forest</i>) para generar tu imagen.</p>
-
-      <div class="input-group">
-        <label for="promptInput">Concepto de la imagen:</label>
-        <textarea id="promptInput" placeholder="Ej: neon city, Cyberpunk, cat astronaut..."></textarea>
-      </div>
-
-      <div class="input-group">
-        <label for="styleSelect">Tema o Categoría:</label>
-        <select id="styleSelect">
-          <option value="">Cualquiera</option>
-          <option value=", nature">🌿 Naturaleza</option>
-          <option value=", futuristic">🚀 Futurista</option>
-          <option value=", architecture">🏙️ Arquitectura</option>
-          <option value=", art">🎨 Artístico</option>
-        </select>
-      </div>
-
-      <button class="generate-btn" id="generateBtn" onclick="generateImage()">
-        🎨 Generar Imagen
-      </button>
+    <div class="card">
+        <h1>Adivina el Número</h1>
+        <p>He pensado en un número del <strong>1 al 50</strong>. ¿Puedes adivinar cuál es?</p>
+        
+        <input type="number" id="intento" min="1" max="50" placeholder="Tu número">
+        <button onclick="verificarAdivinanza()">Probar</button>
+        
+        <p id="mensaje"></p>
+        <button id="reiniciar" onclick="reiniciarJuego()" style="display: none; margin-top: 15px; background-color: #00b894;">Jugar de nuevo</button>
     </div>
 
-    <!-- Panel de Previsualización -->
-    <div class="preview-section" id="previewContainer">
-      <div class="placeholder-text" id="placeholderText">
-        🖼️<br>Tu imagen aparecerá aquí
-      </div>
-      <div class="spinner" id="spinner"></div>
-      <img id="resultImage" alt="Resultado">
-      <a class="download-btn" id="downloadBtn" target="_blank">🔍 Ver en pantalla completa</a>
-    </div>
-  </div>
+    <script>
+        // Generar número aleatorio del 1 al 50
+        let numeroSecreto = Math.floor(Math.random() * 50) + 1;
+        let intentos = 0;
 
-  <script>
-    function generateImage() {
-      const prompt = document.getElementById('promptInput').value.trim();
-      const style = document.getElementById('styleSelect').value;
-      const placeholderText = document.getElementById('placeholderText');
-      const spinner = document.getElementById('spinner');
-      const resultImage = document.getElementById('resultImage');
-      const downloadBtn = document.getElementById('downloadBtn');
+        function verificarAdivinanza() {
+            const inputUsuario = document.getElementById('intento');
+            const mensaje = document.getElementById('mensaje');
+            const botonReiniciar = document.getElementById('reiniciar');
+            const valor = parseInt(inputUsuario.value);
 
-      if (!prompt) {
-        alert('Por favor, escribe una palabra o descripción.');
-        return;
-      }
+            // Validar que sea un número correcto
+            if (isNaN(valor) || valor < 1 || valor > 50) {
+                mensaje.style.color = '#d63031';
+                mensaje.textContent = 'Por favor, ingresa un número válido entre 1 y 50.';
+                return;
+            }
 
-      // Mostrar animación de carga
-      placeholderText.style.display = 'none';
-      resultImage.style.display = 'none';
-      downloadBtn.style.display = 'none';
-      spinner.style.display = 'block';
+            intentos++;
 
-      // Crear URL limpia sin problemas de CORS
-      const query = encodeURIComponent(prompt + style);
-      const randomSeed = Math.floor(Math.random() * 1000);
-      const imageUrl = `https://picsum.photos/seed/${query}${randomSeed}/800/800`;
+            if (valor === numeroSecreto) {
+                mensaje.style.color = '#00b894';
+                mensaje.textContent = `🎉 ¡Felicidades! Adivinaste el número en ${intentos} intentos.`;
+                inputUsuario.disabled = true;
+                botonReiniciar.style.display = 'inline-block';
+            } else if (valor < numeroSecreto) {
+                mensaje.style.color = '#e17055';
+                mensaje.textContent = '📈 El número secreto es **MAYOR**.';
+            } else {
+                mensaje.style.color = '#6c5ce7';
+                mensaje.textContent = '📉 El número secreto es **MENOR**.';
+            }
 
-      // Cargar la imagen
-      resultImage.src = imageUrl;
+            inputUsuario.value = '';
+            inputUsuario.focus();
+        }
 
-      resultImage.onload = () => {
-        spinner.style.display = 'none';
-        resultImage.style.display = 'block';
-        downloadBtn.href = imageUrl;
-        downloadBtn.style.display = 'block';
-      };
+        function reiniciarJuego() {
+            numeroSecreto = Math.floor(Math.random() * 50) + 1;
+            intentos = 0;
+            
+            const mensaje = document.getElementById('mensaje');
+            const inputUsuario = document.getElementById('intento');
+            const botonReiniciar = document.getElementById('reiniciar');
 
-      resultImage.onerror = () => {
-        spinner.style.display = 'none';
-        placeholderText.style.display = 'block';
-        placeholderText.innerHTML = '❌ Intenta con otra palabra clave.';
-      };
-    }
-  </script>
+            mensaje.textContent = '';
+            inputUsuario.disabled = false;
+            inputUsuario.value = '';
+            botonReiniciar.style.display = 'none';
+            inputUsuario.focus();
+        }
+    </script>
+
 </body>
 </html>
